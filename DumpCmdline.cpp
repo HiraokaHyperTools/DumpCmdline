@@ -2,11 +2,52 @@
 //
 
 #include "pch.h"
-#include <iostream>
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	{
+		printf("GetCommandLineA:\n");
+		LPCSTR text = GetCommandLineA();
+		for (int y = 0;; y += 16) {
+			int x;
+			for (x = 0; x < 16 && text[y + x] != 0; ++x) {
+				printf("%02X ", text[y + x] & 255);
+			}
+			bool eof = x != 16;
+			for (; x < 16; ++x) {
+				printf("   ");
+			}
+			for (x = 0; x < 16 && text[y + x] != 0; ++x) {
+				printf("%c", isprint(text[y + x]) ? text[y + x] : '.');
+			}
+			printf("\n");
+			if (eof) {
+				break;
+			}
+		}
+	}
+	{
+		printf("\n\nGetCommandLineW:\n");
+		LPCWSTR text = GetCommandLineW();
+		for (int y = 0;; y += 16) {
+			int x;
+			for (x = 0; x < 16 && text[y + x] != 0; ++x) {
+				printf("%04X ", text[y + x] & 65535);
+			}
+			bool eof = x != 16;
+			for (; x < 16; ++x) {
+				printf("     ");
+			}
+			for (x = 0; x < 16 && text[y + x] != 0; ++x) {
+				printf("%C", isprint(text[y + x]) ? text[y + x] : L'.');
+			}
+			printf("\n");
+			if (eof) {
+				break;
+			}
+		}
+	}
+	return 0;
 }
 
 // プログラムの実行: Ctrl + F5 または [デバッグ] > [デバッグなしで開始] メニュー
